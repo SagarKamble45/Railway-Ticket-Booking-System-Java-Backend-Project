@@ -2,6 +2,16 @@
 
 A command-line based Train Ticket Booking System built with Java, simulating core features of the IRCTC platform. The system uses JSON files as a local database to store train and user data.
 
+
+## ⚠️ Important Note
+
+This project is **still under development** and not fully completed yet.
+There are some known bugs that are currently being worked on.
+You are welcome to explore the available features, but please note that
+some functionality may not work as expected.
+
+I will be updating the repository as the project progresses.
+Stay tuned for future updates! 🚀
 ## 📋 Features
 
 - ✅ User Sign Up

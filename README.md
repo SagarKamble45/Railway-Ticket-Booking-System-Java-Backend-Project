@@ -1,4 +1,4 @@
-markdown# 🚆 IRCTC Train Booking System
+# 🚆 IRCTC Train Booking System
 
 A command-line based Train Ticket Booking System built with Java, simulating core features of the IRCTC platform. The system uses JSON files as a local database to store train and user data.
 

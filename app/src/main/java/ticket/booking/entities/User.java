@@ -1,6 +1,14 @@
 package ticket.booking.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.PropertyNamingStrategy;
+import com.fasterxml.jackson.databind.annotation.JsonNaming;
+
+import java.util.ArrayList;
 import java.util.List;
+
+@JsonNaming(PropertyNamingStrategy.SnakeCaseStrategy.class)
+@JsonIgnoreProperties(ignoreUnknown = true)
 
 public class User {
     private String name;
@@ -8,6 +16,18 @@ public class User {
     private String hashPassword;
     private List<Ticket> ticketBooked;
     private String userId;
+
+    public User() {
+    }
+
+    public User(String username, String password, String HashPass, ArrayList<Object> objects, String userid) {
+        this.name = username;
+        this.password = password;
+        this.hashPassword = HashPass;
+        this.ticketBooked = new ArrayList<>();
+        this.userId = userid;
+
+    }
 
     public String getName() {
         return name;
@@ -47,5 +67,11 @@ public class User {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public void printTickets() {
+        for (Ticket ticket : ticketBooked) {
+            System.out.println(ticket.getTicketInfo());
+        }
     }
 }

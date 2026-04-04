@@ -23,30 +23,32 @@ A command-line based Train Ticket Booking System built with Java, simulating cor
 | JSON files | Local database |
 
 ## 📁 Project Structure
+```
 IRCTC/
 ├── app/
 │   ├── src/
-│   │   ├── main/
-│   │   │   └── java/
-│   │   │       └── ticket/booking/
-│   │   │           ├── App.java               # Main entry point
-│   │   │           ├── entities/
-│   │   │           │   ├── Train.java         # Train entity
-│   │   │           │   ├── Ticket.java        # Ticket entity
-│   │   │           │   └── User.java          # User entity
-│   │   │           ├── services/
-│   │   │           │   ├── TrainService.java  # Train operations
-│   │   │           │   └── UserBookingService.java # User & booking operations
-│   │   │           ├── util/
-│   │   │           │   └── UserServiceUtil.java # Password hashing utility
-│   │   │           └── localDB/
-│   │   │               ├── trains.json        # Train data
-│   │   │               └── users.json         # User data
+│   │   └── main/
+│   │       └── java/
+│   │           └── ticket/booking/
+│   │               ├── App.java
+│   │               ├── entities/
+│   │               │   ├── Train.java
+│   │               │   ├── Ticket.java
+│   │               │   └── User.java
+│   │               ├── services/
+│   │               │   ├── TrainService.java
+│   │               │   └── UserBookingService.java
+│   │               ├── util/
+│   │               │   └── UserServiceUtil.java
+│   │               └── localDB/
+│   │                   ├── trains.json
+│   │                   └── users.json
 │   └── build.gradle
 ├── gradle/
 ├── gradlew
 ├── gradlew.bat
 └── settings.gradle
+```
 
 ## ⚙️ Setup & Run
 

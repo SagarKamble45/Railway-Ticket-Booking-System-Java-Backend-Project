@@ -16,33 +16,31 @@ public class App {
     public static void main(String[] args) {
         System.out.println("Running Train Booking System");
         Scanner sc = new Scanner(System.in);
-        int option=0;
+        int option = 0;
         UserBookingService userBookingService;
 
-        try{
+        try {
             userBookingService = new UserBookingService();
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("There is something wrong" + e.getMessage());
             return;
         }
-        while (option!=7){
+
+        // Pre-login menu
+        while (option != 3) {
+            System.out.println("\nWelcome to IRCTC!");
             System.out.println("Choose option:");
             System.out.println("1. sign up");
             System.out.println("2. login");
-            System.out.println("3. Fetch Bookings");
-            System.out.println("4. Search train");
-            System.out.println("5. Book a Seat");
-            System.out.println("6. Cancel my Booking");
-            System.out.println("7. Exit");
+            System.out.println("3. Exit");
             option = sc.nextInt();
-            Train trainSelectedForBooking = new Train();
-            switch (option){
+            switch (option) {
                 case 1:
                     System.out.println("Enter your username to sign up:");
                     String username = sc.next();
                     System.out.println("Enter your password:");
                     String password = sc.next();
-                    User userToSignup = new User(username,password, UserServiceUtil.hashPassword(password),
+                    User userToSignup = new User(username, password, UserServiceUtil.hashPassword(password),
                             new ArrayList<>(),
                             UUID.randomUUID().toString());
                     userBookingService.signUp(userToSignup);
@@ -52,41 +50,73 @@ public class App {
                     String userName = sc.next();
                     System.out.println("Enter your password:");
                     String pass = sc.next();
-                    User userToLogin = new User(userName,pass, UserServiceUtil.hashPassword(pass), new ArrayList<>(), UUID.randomUUID().toString());
-                    try{
+                    User userToLogin = new User(userName, pass, UserServiceUtil.hashPassword(pass), new ArrayList<>(), UUID.randomUUID().toString());
+                    try {
                         userBookingService = new UserBookingService(userToLogin);
-                    }catch (IOException e){
-                        return;
+                        System.out.println("Login successful! Welcome " + userName);
+                        postLoginMenu(sc, userBookingService);
+                    } catch (IOException e) {
+                        System.out.println("Login failed: " + e.getMessage());
                     }
                     break;
                 case 3:
-                    System.out.println("Fetch Bookings");
+                    System.out.println("Goodbye!");
+                    break;
+                default:
+                    System.out.println("Invalid option. Please choose 1-3.");
+                    break;
+            }
+        }
+    }
+
+
+    //Post Login Menu
+    private static void postLoginMenu(Scanner sc, UserBookingService userBookingService) {
+        Train trainSelectedForBooking = new Train();
+        int option = 0;
+        while (option != 5) {
+            System.out.println("\nWhat would you like to do?");
+            System.out.println("1. Fetch Bookings");
+            System.out.println("2. Search train");
+            System.out.println("3. Book a Seat");
+            System.out.println("4. Cancel my Booking");
+            System.out.println("5. Logout");
+            option = sc.nextInt();
+
+            switch (option) {
+                case 1:
+                    System.out.println("Your Bookings");
                     userBookingService.fetchBooking();
                     break;
-                case 4:
+                case 2:
                     System.out.println("Type your source station");
                     String sourceStation = sc.next();
                     System.out.println("Type your destination station");
                     String destinationStation = sc.next();
                     List<Train> trains = userBookingService.getTrains(sourceStation, destinationStation);
 
-                    int index =1;
-                    for (Train t: trains){
-                        System.out.println(index+" Train id : "+t.getTrainId());
-                        for (Map.Entry<String, String> entry: t.getStationTimes().entrySet()){
-                            System.out.println("station "+entry.getKey()+" time: "+entry.getValue());
+                    if (trains.isEmpty()) {
+                        System.out.println("No trains found for that route.");
+                        break;
+                    }
+
+                    int index = 1;
+                    for (Train t : trains) {
+                        System.out.println(index + " Train id : " + t.getTrainId());
+                        for (Map.Entry<String, String> entry : t.getStationTimes().entrySet()) {
+                            System.out.println("station " + entry.getKey() + " time: " + entry.getValue());
                         }
+                        index++;
                     }
                     System.out.println("Select a train by typing 1,2,3...");
-                    trainSelectedForBooking = trains.get(sc.nextInt());
+                    trainSelectedForBooking = trains.get(sc.nextInt()-1);
                     break;
-
-                case 5:
+                case 3:
                     System.out.println("Select a seat out of these seats");
                     List<List<Integer>> seats = userBookingService.fetchSeats(trainSelectedForBooking);
-                    for(List<Integer> row: seats){
-                        for (Integer val:row){
-                            System.out.println(val+" ");
+                    for (List<Integer> row : seats) {
+                        for (Integer val : row) {
+                            System.out.println(val + " ");
                         }
                         System.out.println();
                     }
@@ -100,21 +130,27 @@ public class App {
                     Boolean booked = userBookingService.bookTrainSeat(trainSelectedForBooking, row, column);
                     if (booked.equals(Boolean.TRUE)) {
                         System.out.println("Seat Booked Successfully");
-                    }else{
+                    } else {
                         System.out.println("Can't book this seat");
                     }
                     break;
-                case 6:
+                case 4:
                     userBookingService.fetchBooking();
                     System.out.println("Enter the TicketId");
                     String ticketId = sc.next();
                     userBookingService.cancelBooking(ticketId);
                     break;
-                default:
-                    System.out.println("Invalid option");
+                case 5:
+                    System.out.println("Logged out successfully!");
                     break;
 
+                default:
+                    System.out.println("Invalid option. Please choose 1-5.");
+                    break;
             }
+
+
         }
     }
 }
+

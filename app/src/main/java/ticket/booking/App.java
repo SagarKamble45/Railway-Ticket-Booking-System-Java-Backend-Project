@@ -91,7 +91,7 @@ public class App {
             switch (option) {
                 case 1:
                     System.out.println("Fetching Bookings....");
-                    userBookingService.fetchBooking();
+                    userBookingService.fetchBooking(loggedInUser);
                     break;
                 case 2:
                     System.out.println("Type your source station");
@@ -122,8 +122,6 @@ public class App {
                         System.out.println("First find and select the train.");
                         break;
                     }
-
-
                     String[] stations = TrainService.selectSourceAndDestination(trainSelectedForBooking, sc);
                     if (stations == null) {break;}
                     String source = stations[0];      // ← source
@@ -153,7 +151,7 @@ public class App {
                     }
                     break;
                 case 4:
-                    userBookingService.fetchBooking();
+                    userBookingService.fetchBooking(loggedInUser);
                     System.out.println("Enter the TicketId");
                     String ticketId = sc.next();
                     userBookingService.cancelBooking(ticketId);

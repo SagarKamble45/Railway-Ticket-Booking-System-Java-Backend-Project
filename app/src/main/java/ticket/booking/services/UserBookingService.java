@@ -67,19 +67,12 @@ public class UserBookingService {
     }
 
     //Fetch the user Bookings
-    public void fetchBooking(){
-        Optional<User> userFetched = userList.stream().filter(user1->{return user1.getName().equals(user.getName()) && UserServiceUtil.checkPassword(user.getPassword(),user1.getHashPassword());}).findFirst();
-        if (userFetched.isPresent()){
-            userFetched.get().printTickets();
-        }
-//        user.printTickets();
+    public void fetchBooking(User user){
+        user.printTickets();
     }
 
-    public Boolean cancelBooking(String ticketId){
-        Scanner sc = new Scanner(System.in);
-        System.out.println("Enter the ticket Id to cancel");
-        ticketId = sc.nextLine();
 
+    public Boolean cancelBooking(String ticketId){
         if(ticketId.isEmpty() || ticketId == null){
             System.out.println("Ticket Id can't be empty");
             return false;

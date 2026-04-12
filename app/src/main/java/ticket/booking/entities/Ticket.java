@@ -86,7 +86,26 @@
             this.train = train;
         }
 
-        public String getTicketInfo(){
-            return String.format("Ticket ID: %s belongs to User %s from %s to %s", ticketId, userId, source, destination);
+        public String getTicketInfo() {
+
+            return String.format(
+                    "-----------------------------\n" +
+                            "Ticket ID   : %s\n" +
+                            "User ID     : %s\n" +
+                            "Date        : %s\n" +
+                            "Source      : %s\n" +
+                            "Destination : %s\n" +
+                            "Train ID    : %s\n" +
+                            "Seat        : Row %d, Column %d\n" +
+                            "-----------------------------",
+                    ticketId,
+                    userId,
+                    date,
+                    source,
+                    destination,
+                    train.getTrainId(),
+                    row,
+                    seat
+            );
         }
     }

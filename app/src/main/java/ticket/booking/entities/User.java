@@ -20,6 +20,7 @@ public class User {
     public User() {
     }
 
+    //for signup
     public User(String username, String password, String HashPass, ArrayList<Object> objects, String userid) {
         this.name = username;
         this.password = password;
@@ -27,6 +28,14 @@ public class User {
         this.ticketBooked = new ArrayList<>();
         this.userId = userid;
 
+    }
+
+
+    //for Login
+    public User(String username, String password, String HashPass) {
+        this.name = username;
+        this.password = password;
+        this.hashPassword = HashPass;
     }
 
     public String getName() {
@@ -70,6 +79,10 @@ public class User {
     }
 
     public void printTickets() {
+        if(ticketBooked.isEmpty()){
+            System.out.println("No tickets have been booked");
+            return;
+        }
         for (Ticket ticket : ticketBooked) {
             System.out.println(ticket.getTicketInfo());
         }

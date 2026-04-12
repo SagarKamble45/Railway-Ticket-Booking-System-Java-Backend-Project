@@ -10,10 +10,7 @@ import ticket.booking.util.UserServiceUtil;
 import javax.swing.*;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Scanner;
+import java.util.*;
 
 public class UserBookingService {
 
@@ -48,6 +45,8 @@ public class UserBookingService {
                     return user1.getName().equals(user.getName()) &&
                             UserServiceUtil.checkPassword(user.getPassword(),user1.getHashPassword());
                 }).findFirst();
+        user.setUserId(foundUser.get().getUserId());
+        user.setTicketBooked(foundUser.get().getTicketBooked());
         return foundUser.isPresent();
     }
 
@@ -112,7 +111,7 @@ public class UserBookingService {
         return train.getSeats();
     }
 
-    public Boolean bookTrainSeat(Train train, int row, int seat){
+    public Boolean bookTrainSeat(Train train, int row, int seat, String source, String destination,User user){
         try{
             TrainService trainService = new TrainService();
             List<List<Integer>> seats = train.getSeats();
@@ -121,6 +120,7 @@ public class UserBookingService {
                     seats.get(row).set(seat, 1);
                     train.setSeats(seats);
                     trainService.addTrain(train);
+                    assignTickettoUser(train, row, seat, user, source, destination);
                     return true; // Booking successful
                 }
                 else {return false;}
@@ -131,6 +131,44 @@ public class UserBookingService {
 
         }catch (IOException e){
             return Boolean.FALSE;
+        }
+    }
+
+    public void assignTickettoUser(Train train, int row, int seat, User user, String source, String destination){
+        Ticket ticket = new Ticket();
+        ticket.setTicketId(UUID.randomUUID().toString()); // unique ID
+        ticket.setTrain(train);
+        ticket.setRow(row + 1);
+        ticket.setSeat(seat + 1);
+        ticket.setUserId(user.getUserId());
+        ticket.setSource(source);
+        ticket.setDestination(destination);
+        ticket.setDate(new Date());
+
+        // Add ticket to user's booking list
+        List<Ticket> bookedTickets = user.getTicketBooked();
+        if (bookedTickets == null) {
+            bookedTickets = new ArrayList<>(); // ← safety check
+        }
+        bookedTickets.add(ticket);
+        user.setTicketBooked(bookedTickets);
+
+        // Save updated user
+        updateUserInList(user);
+    }
+    private void updateUserInList(User updatedUser) {
+        try {
+            // Find and replace the user in the list by userId
+            for (int i = 0; i < userList.size(); i++) {
+                if (userList.get(i).getUserId().equals(updatedUser.getUserId())) {
+                    userList.set(i, updatedUser); // ← replace old user with updated one
+                    break;
+                }
+            }
+            // Save the updated list to file
+            saveUserListToFile();
+        } catch (IOException e) {
+            System.out.println("Failed to update user: " + e.getMessage());
         }
     }
 

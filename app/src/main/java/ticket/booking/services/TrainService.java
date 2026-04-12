@@ -6,9 +6,7 @@ import ticket.booking.entities.Train;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Optional;
-import java.util.OptionalInt;
+import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -65,5 +63,44 @@ public class TrainService {
 
         return sourceIndex != -1 && destinationIndex != -1 && sourceIndex < destinationIndex;
 
+    }
+
+    public static String[] selectSourceAndDestination(Train train, Scanner sc) {
+        // Get all stations from the train
+        List<String> stations = new ArrayList<>(train.getStationTimes().keySet());
+
+        // Show available stations
+        System.out.println("Available stations for this train:");
+        for (int i = 0; i < stations.size(); i++) {
+            System.out.println((i + 1) + ". " + stations.get(i));
+        }
+
+        // Ask user to pick source
+        System.out.println("Select your source station number:");
+        int sourceIndex = sc.nextInt() - 1;
+
+        // Ask user to pick destination
+        System.out.println("Select your destination station number:");
+        int destinationIndex = sc.nextInt() - 1;
+
+        // Validate input
+        if (sourceIndex < 0 || sourceIndex >= stations.size() ||
+                destinationIndex < 0 || destinationIndex >= stations.size()) {
+            System.out.println("Invalid station selection!");
+            return null;
+        }
+
+        // Validate source and destination are not the same
+        if (sourceIndex == destinationIndex) {
+            System.out.println("Source and destination cannot be the same!");
+            return null;
+        }
+
+        String source = stations.get(sourceIndex);
+        String destination = stations.get(destinationIndex);
+
+        System.out.println("Source: " + source + " → Destination: " + destination);
+
+        return new String[]{source, destination}; // ← returns both as array
     }
 }

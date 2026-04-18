@@ -75,20 +75,53 @@ public class UserBookingService {
     }
 
 
-    public Boolean cancelBooking(String ticketId){
-        if(ticketId.isEmpty() || ticketId == null){
+//    public Boolean cancelBooking(String ticketId){
+//        if(ticketId.isEmpty() || ticketId == null){
+//            System.out.println("Ticket Id can't be empty");
+//            return false;
+//        }
+//
+//        String finalTicketId = ticketId; //Beacause String are immutable
+//        boolean removed = user.getTicketBooked().removeIf(ticket -> ticket.getTicketId().equals(finalTicketId));
+//
+//        if (removed){
+//            System.out.println("Ticket with ID "+ ticketId + " has been cancelled");
+//            return Boolean.TRUE;
+//        }else {
+//            System.out.println("No ticket found with ID" + ticketId);
+//            return Boolean.FALSE;
+//        }
+//    }
+
+    public Boolean cancelBooking(String ticketId) {
+        if (ticketId == null || ticketId.isEmpty()) {
             System.out.println("Ticket Id can't be empty");
             return false;
         }
 
-        String finalTicketId = ticketId; //Beacause String are immutable
-        boolean removed = user.getTicketBooked().removeIf(ticket -> ticket.getTicketId().equals(finalTicketId));
+        Ticket ticketToCancel = user.getTicketBooked()
+                .stream()
+                .filter(ticket -> ticket.getTicketId().equals(ticketId))
+                .findFirst().get();
 
-        if (removed){
-            System.out.println("Ticket with ID "+ ticketId + " has been cancelled");
+        // Clear the seat in the train
+        Train train = ticketToCancel.getTrain();
+        train.getSeats().get(ticketToCancel.getRow()).set(ticketToCancel.getSeat(), 0);
+
+
+        // Update the train in trains.json
+        try{
+            TrainService trainService = new TrainService();
+            trainService.updateTrain(train);
+            // Remove the ticket from user
+            user.getTicketBooked().removeIf(t -> t.getTicketId().equals(ticketId));
+
+            // Update the user in users.json
+            updateUserInList(user);
+
+            System.out.println("Ticket with ID: " + ticketId + " has been cancelled and seat has been cleared.");
             return Boolean.TRUE;
-        }else {
-            System.out.println("No ticket found with ID" + ticketId);
+        }catch (IOException e){
             return Boolean.FALSE;
         }
     }

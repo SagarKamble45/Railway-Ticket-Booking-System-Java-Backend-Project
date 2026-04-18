@@ -110,8 +110,6 @@ public class App {
                     System.out.println("Invalid option. Please choose 1-5.");
                     break;
             }
-
-
         }
     }
 }

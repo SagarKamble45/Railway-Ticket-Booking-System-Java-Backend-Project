@@ -119,7 +119,7 @@ public class AppServices {
         if (booked.equals(Boolean.TRUE)) {
             System.out.println("Seat Booked Successfully");
         } else {
-            System.out.println("Can't book this seat");
+            System.out.println("Can't book this seat It is already booked");
         }
     }
 

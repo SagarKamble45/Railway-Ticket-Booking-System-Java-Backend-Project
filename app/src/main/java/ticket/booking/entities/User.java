@@ -83,8 +83,10 @@ public class User {
             System.out.println("No tickets have been booked");
             return;
         }
+        int i=1;
         for (Ticket ticket : ticketBooked) {
-            System.out.println(ticket.getTicketInfo());
+            System.out.println("Ticket no " + i++);
+            System.out.println(ticket.getTicketInfo(this));
         }
     }
 }

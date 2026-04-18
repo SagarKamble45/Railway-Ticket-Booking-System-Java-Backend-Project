@@ -45,8 +45,11 @@ public class UserBookingService {
                     return user1.getName().equals(user.getName()) &&
                             UserServiceUtil.checkPassword(user.getPassword(),user1.getHashPassword());
                 }).findFirst();
-        user.setUserId(foundUser.get().getUserId());
-        user.setTicketBooked(foundUser.get().getTicketBooked());
+        if (foundUser.isPresent()) {
+            user.setUserId(foundUser.get().getUserId());
+            user.setTicketBooked(foundUser.get().getTicketBooked());
+        }
+
         return foundUser.isPresent();
     }
 

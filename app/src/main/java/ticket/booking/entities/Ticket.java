@@ -86,12 +86,13 @@
             this.train = train;
         }
 
-        public String getTicketInfo() {
+        public String getTicketInfo(User user) {
 
             return String.format(
                     "-----------------------------\n" +
                             "Ticket ID   : %s\n" +
                             "User ID     : %s\n" +
+                            "Name        : %s\n" +
                             "Date        : %s\n" +
                             "Source      : %s\n" +
                             "Destination : %s\n" +
@@ -100,6 +101,7 @@
                             "-----------------------------",
                     ticketId,
                     userId,
+                    user.getName(),
                     date,
                     source,
                     destination,

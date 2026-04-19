@@ -68,6 +68,8 @@ public class TrainService {
     public static String[] selectSourceAndDestination(Train train, Scanner sc) {
         // Get all stations from the train
         List<String> stations = new ArrayList<>(train.getStationTimes().keySet());
+        int sourceIndex;
+        int destinationIndex;
 
         // Show available stations
         System.out.println("Available stations for this train:");
@@ -75,25 +77,39 @@ public class TrainService {
             System.out.println((i + 1) + ". " + stations.get(i));
         }
 
-        // Ask user to pick source
-        System.out.println("Select your source station number:");
-        int sourceIndex = sc.nextInt() - 1;
+        while (true) {
+            // Ask user to pick source
+            System.out.println("Select your source station number:");
+            if (!sc.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                sc.next();
+                continue;
+            }
+             sourceIndex = sc.nextInt() - 1;
 
-        // Ask user to pick destination
-        System.out.println("Select your destination station number:");
-        int destinationIndex = sc.nextInt() - 1;
+            // Ask user to pick destination
+            System.out.println("Select your destination station number:");
+            if (!sc.hasNextInt()) {
+                System.out.println("Invalid input! Please enter a number.");
+                sc.next();
+                continue;
+            }
+            destinationIndex = sc.nextInt() - 1;
 
-        // Validate input
-        if (sourceIndex < 0 || sourceIndex >= stations.size() ||
-                destinationIndex < 0 || destinationIndex >= stations.size()) {
-            System.out.println("Invalid station selection!");
-            return null;
-        }
+            // bounds check
+            if (sourceIndex < 0 || sourceIndex >= stations.size() ||
+                    destinationIndex < 0 || destinationIndex >= stations.size()) {
+                System.out.println("Station number out of range. Try again.");
+                continue;
+            }
+            // Validate source and destination are not the same
+            if (sourceIndex == destinationIndex) {
+                System.out.println("Source and destination cannot be the same!");
+                continue;
+            }
 
-        // Validate source and destination are not the same
-        if (sourceIndex == destinationIndex) {
-            System.out.println("Source and destination cannot be the same!");
-            return null;
+            // ✅ Valid input — break out of the loop and proceed
+            break;
         }
 
         String source = stations.get(sourceIndex);

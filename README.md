@@ -1,11 +1,6 @@
 # 🚆 IRCTC Train Booking System
 A command-line based Train Ticket Booking System built with Java, simulating core features of the IRCTC platform. The system uses JSON files as a local database to store train and user data.
 
-## 🎬 Video Demo
-[![IRCTC Train Booking System | Java CLI Project Demo](https://img.youtube.com/vi/2Q_XZeMOCeY/0.jpg)](https://youtu.be/2Q_XZeMOCeY)
-
-> Click the thumbnail above to watch the demo on YouTube
-
 ## ⚠️ Important Note
 This project is **still under development** and not fully completed yet.
 There are some known bugs that are currently being worked on.
@@ -61,6 +56,11 @@ IRCTC/
 ├── gradlew.bat
 └── settings.gradle
 ```
+
+## 🎬 Video Demo
+[![IRCTC Train Booking System | Java CLI Project Demo](https://img.youtube.com/vi/2Q_XZeMOCeY/0.jpg)](https://youtu.be/2Q_XZeMOCeY)
+
+> Click the thumbnail above to watch the demo on YouTube
 
 ## ⚙️ Setup & Run
 

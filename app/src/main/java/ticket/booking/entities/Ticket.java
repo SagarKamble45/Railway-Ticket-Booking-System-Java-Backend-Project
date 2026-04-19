@@ -17,6 +17,8 @@
         private String source;
         private String destination;
         private Train train;
+        private int row;    // ← add this
+        private int seat;   // ← add this
 
         public int getRow() {
             return row;
@@ -33,9 +35,6 @@
         public void setSeat(int seat) {
             this.seat = seat;
         }
-
-        private int row;    // ← add this
-        private int seat;   // ← add this
 
 
         public String getTicketId() {

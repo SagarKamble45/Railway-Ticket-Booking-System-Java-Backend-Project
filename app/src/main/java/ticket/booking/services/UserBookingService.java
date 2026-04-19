@@ -99,16 +99,26 @@ public class UserBookingService {
             return false;
         }
 
-        Ticket ticketToCancel = user.getTicketBooked()
+//        Ticket ticketToCancel = user.getTicketBooked()
+//                .stream()
+//                .filter(ticket -> ticket.getTicketId().equals(ticketId))
+//                .findFirst().get();
+
+        Optional<Ticket> ticketToCancel = user.getTicketBooked()
                 .stream()
                 .filter(ticket -> ticket.getTicketId().equals(ticketId))
-                .findFirst().get();
+                .findFirst();
+
+        if (!ticketToCancel.isPresent()) {
+            System.out.println("Ticket not found!");
+            return false;
+        }
+
+        Ticket cancleTicket = ticketToCancel.get();
 
         // Clear the seat in the train
-        Train train = ticketToCancel.getTrain();
-        train.getSeats().get(ticketToCancel.getRow()).set(ticketToCancel.getSeat(), 0);
-
-
+        Train train = cancleTicket.getTrain();
+        train.getSeats().get(cancleTicket.getRow()).set(cancleTicket.getSeat(), 0);
         // Update the train in trains.json
         try{
             TrainService trainService = new TrainService();
@@ -167,8 +177,10 @@ public class UserBookingService {
         Ticket ticket = new Ticket();
         ticket.setTicketId(UUID.randomUUID().toString()); // unique ID
         ticket.setTrain(train);
-        ticket.setRow(row + 1);
-        ticket.setSeat(seat + 1);
+//        ticket.setRow(row + 1);
+//        ticket.setSeat(seat + 1);
+        ticket.setRow(row );
+        ticket.setSeat(seat );
         ticket.setUserId(user.getUserId());
         ticket.setSource(source);
         ticket.setDestination(destination);

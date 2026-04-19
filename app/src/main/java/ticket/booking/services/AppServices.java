@@ -85,14 +85,6 @@ public class AppServices {
         return trains.get(selectTrain - 1);
     }
 
-//    checking the input is int or not
-    public static Boolean checkInputisInt(Scanner sc) {
-        if (sc.hasNextInt()) {
-            return true;
-        }
-        return false;
-    }
-
     //Book a seat from the selected trains
     public static void bookSeat(Scanner sc, UserBookingService userBookingService, Train trainSelectedForBooking, User loggedInUser) throws IOException {
         if (trainSelectedForBooking.getTrainId() == null ||
